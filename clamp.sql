@@ -9,6 +9,11 @@ CREATE TABLE families (
     family_name VARCHAR
 );
 
+CREATE TABLE native_distributions (
+    distribution_id SERIAL PRIMARY KEY,
+    distribution_name VARCHAR
+);
+
 CREATE TABLE latin_binomials (
 	binomial_id SERIAL PRIMARY KEY,
 	binomial_name VARCHAR,
@@ -21,6 +26,12 @@ CREATE TABLE common_names (
     binomial_id INT REFERENCES latin_binomials (binomial_id) 
 );
 
+CREATE TABLE plant_distributions (
+    plant_distributions_id SERIAL PRIMARY KEY,
+    plant_id INT REFERENCES latin_binomials(binomial_id),
+    distribution_id INT REFERENCES native_distributions(distribution_id)
+);
+
 INSERT INTO families (family_name) VALUES 
 ('Caryophyllaceae'),
 ('Scrophulariaceae'),
@@ -28,9 +39,7 @@ INSERT INTO families (family_name) VALUES
 ('Apocynaceae'),
 ('Convolvulaceae'),
 ('Fabaceae'),
-('Scrophulariaceae'),
 ('Asteraceae'),
-('Fabaceae'),
 ('Chenopodiaceae');
 
 INSERT INTO latin_binomials (binomial_name, family_id) VALUES
@@ -40,16 +49,16 @@ INSERT INTO latin_binomials (binomial_name, family_id) VALUES
 ('Nerium oleander L.', 4),
 ('Ipomoea repanda Jacq.', 5),
 ('Lathyrus bijugatus T.G. White', 6),
-('Castilleja angustifolia (Nutt.) G. Don var. dubia A. Nelson', 7),
-('Oligoneuron riddellii (Frank ex Riddell) Rydb.', 8),
-('Astragalus tortipes J.L. Anderson & J.M. Porter', 9),
-('Chenopodium pallescens Standl.', 10);
+('Castilleja angustifolia (Nutt.) G. Don var. dubia A. Nelson', 2),
+('Oligoneuron riddellii (Frank ex Riddell) Rydb.', 7),
+('Astragalus tortipes J.L. Anderson & J.M. Porter', 6),
+('Chenopodium pallescens Standl.', 8);
 
 INSERT INTO common_names (common_name, binomial_id) VALUES
 ('Seely''s Catchfly', 1),
 ('Seely''s silene', 1),
 ('Purple Chinese Houses', 2),
-('innocence', 2),
+('Innocence', 2),
 ('Island Jepsonia', 3),
 ('Oleander', 4),
 ('Laurier Rose', 4),
@@ -63,5 +72,17 @@ INSERT INTO common_names (common_name, binomial_id) VALUES
 ('Sleeping Ute Milkvetch', 9),
 ('Slimleaf Goosefoot', 10);
 
-SELECT family_name, binomial_name, common_name FROM families JOIN latin_binomials ON families.family_id = latin_binomials.family_id JOIN common_names ON latin_binomials.binomial_id = common_names.binomial_id;
-WHERE family_name = 'Fabaceae';
+INSERT INTO native_distributions (distribution_name) VALUES
+('Africa'),
+('Europe'),
+('North America'),
+('South America'),
+('Asia'),
+('Australia'),
+('Antarctica');
+
+-- INSERT INTO plant_distributions (plant_id, distribution_id) VALUES
+-- (),
+
+
+SELECT binomial_name FROM families JOIN latin_binomials ON families.family_id = latin_binomials.family_id JOIN common_names ON latin_binomials.binomial_id = common_names.binomial_id WHERE common_names.common_name = 'Oleander';
