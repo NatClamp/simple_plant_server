@@ -40,7 +40,8 @@ INSERT INTO families (family_name) VALUES
 ('Convolvulaceae'),
 ('Fabaceae'),
 ('Asteraceae'),
-('Chenopodiaceae');
+('Chenopodiaceae'),
+('Rosaceae');
 
 INSERT INTO latin_binomials (binomial_name, family_id) VALUES
 ('Silene seelyi Morton & J.W. Thomp.', 1),
@@ -85,4 +86,10 @@ INSERT INTO native_distributions (distribution_name) VALUES
 -- (),
 
 
-SELECT binomial_name FROM families JOIN latin_binomials ON families.family_id = latin_binomials.family_id JOIN common_names ON latin_binomials.binomial_id = common_names.binomial_id WHERE common_names.common_name = 'Oleander';
+-- SELECT binomial_name FROM families JOIN latin_binomials ON families.family_id = latin_binomials.family_id JOIN common_names ON latin_binomials.binomial_id = common_names.binomial_id WHERE common_names.common_name = 'Oleander';
+
+SELECT binomial_name FROM latin_binomials JOIN families ON latin_binomials.family_id = families.family_id;
+
+INSERT INTO latin_binomials (binomial_name, family_id) VALUES ('Crataegus wootoniana Eggl.', 9);
+
+SELECT binomial_name, family_name FROM latin_binomials JOIN families ON latin_binomials.family_id = families.family_id;
