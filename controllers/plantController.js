@@ -2,7 +2,7 @@ const db = require("../db/db");
 
 exports.getPlants = (req, res, next) => {
   db.many(
-    "SELECT DISTINCT family_name, binomial_name FROM families JOIN latin_binomials ON families.family_id = latin_binomials.family_id JOIN common_names ON latin_binomials.binomial_id = common_names.binomial_id;"
+    "SELECT binomial_name, family_name FROM latin_binomials JOIN families ON latin_binomials.family_id = families.family_id;"
   )
     .then(plantInfo => {
       res.status(200).json({ plantInfo });
